@@ -24,7 +24,6 @@ function Score() {
         </span>
         / 100
       </h1>
-      <h2 className="font-medium text-2xl text-red-600">-30</h2>
     </div>
   );
 }

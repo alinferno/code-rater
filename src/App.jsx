@@ -155,10 +155,15 @@ function App() {
   return (
     <>
       <AppContext.Provider value={allData}>
-        <section className="!text-sm sm:text-base mx-auto flex justify-center items-center flex-col gap-4 py-4">
+        <section className="!text-sm sm:text-base mx-auto flex justify-center items-center flex-col gap-6 py-4">
           {isRated && <Score />}
 
-          <h1 className="font-medium text-2xl">{data.title}</h1>
+          <div className="flex justify-center items-center gap-2 relative mt-2">
+            <h1 className="font-medium text-3xl">{data.title}</h1>
+            <h2 className="font-medium text-md text-red-600 flex justify-end absolute -right-8 top-[14px] items-end">
+              {isRated && -30}
+            </h2>
+          </div>
 
           {data.title && !isRated && <Rate />}
 

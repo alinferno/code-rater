@@ -37,7 +37,7 @@ function Code() {
             );
           })
         ) : (
-          <span className="text-gray-400">Upload a file</span>
+          <span className="text-gray-400">Upload a python file</span>
         )}
       </div>
     </div>
