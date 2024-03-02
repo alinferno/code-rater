@@ -84,6 +84,7 @@ function App() {
   };
 
   const showNesting = () => {
+    if (selectedMetric == "Nesting") return unselect();
     setSelectedMetric("Nesting");
     let hashset = new Set();
     results.nestingLines.forEach((line) => hashset.add(line[0]));
@@ -94,6 +95,7 @@ function App() {
   };
 
   const showFunctions = () => {
+    if (selectedMetric == "Functions") return unselect();
     setSelectedMetric("Functions");
     let hashset = new Set();
     results.longFuncs.forEach((res) => {
@@ -109,6 +111,7 @@ function App() {
   };
 
   const showInheritance = () => {
+    if (selectedMetric == "Inheritance") return unselect();
     setSelectedMetric("Inheritance");
     let hashset = new Set();
     results.inheritances.forEach((line) => hashset.add(line));
@@ -116,6 +119,12 @@ function App() {
     let map = new Map();
     results.inheritances.map((index) => map.set(index, 20));
     setMinus(map);
+  };
+
+  const unselect = () => {
+    setSelectedMetric("");
+    setHighlighted(undefined);
+    setMinus(undefined);
   };
 
   const allData = {
@@ -164,10 +173,10 @@ function App() {
                   <div key={index} className="relative">
                     <button
                       onClick={() => topic[1]()}
-                      className={`bg-green-500 text-white px-4 py-1 hover:cursor-pointer hover:bg-green-400 ${
+                      className={`bg-green-500 box-border border  text-white px-4 py-1  hover:cursor-pointer hover:bg-green-400 ${
                         selectedMetric == topic[0]
-                          ? "border border-green-800"
-                          : ""
+                          ? "border-green-800 "
+                          : "border-transparent"
                       }`}
                     >
                       {topic[0]}
