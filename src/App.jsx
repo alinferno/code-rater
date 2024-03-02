@@ -67,15 +67,13 @@ function App() {
       return acc + func[2] - 15;
     }, 0);
 
-    let average = sum / results.longFuncs.length;
-
     const nestingScore = results.nestingLines.reduce((acc, func) => {
       return acc + func[1];
     }, 0);
 
     res.push(results.inheritances.length * 20);
     res.push(nestingScore);
-    res.push(isNaN(average) ? 0 : average);
+    res.push(isNaN(sum) ? 0 : sum);
 
     score -= res.reduce((acc, value) => {
       return acc + value;

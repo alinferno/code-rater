@@ -4,7 +4,7 @@ import { AppContext } from "../App";
 function Code() {
   const { data, highlighted, minus } = useContext(AppContext);
   return (
-    <div className="bg-gray-100 w-[600px] max-w-[95%] min-h-[300px] rounded-sm p-2">
+    <div className="bg-gray-100 w-[750px] max-w-[95%] min-h-[300px] rounded-sm p-2">
       <div className="">
         {data.text.length > 0 ? (
           data.text.map((line, index) => {

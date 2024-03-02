@@ -5,8 +5,8 @@ import { AppContext } from "../App";
 function Score() {
   const { score } = useContext(AppContext);
   return (
-    <div>
-      <h1 className="text-4xl font-medium">
+    <div className="flex justify-center items-center flex-col gap-1">
+      <h1 className="text-5xl font-medium">
         <span
           className={`${
             score < 20
@@ -24,6 +24,7 @@ function Score() {
         </span>
         / 100
       </h1>
+      <h2 className="font-medium text-2xl text-red-600">-30</h2>
     </div>
   );
 }
