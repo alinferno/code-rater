@@ -35,6 +35,8 @@ function App() {
     resetState();
     event.preventDefault();
     if (event.target.files.length == 0) return;
+    if (!event.target.files[0].name.endsWith(".py"))
+      return alert("Must be a python file!");
     setData((prev) => ({ ...prev, title: event.target.files[0].name }));
     const reader = new FileReader();
     reader.onload = async (e) => {
