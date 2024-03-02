@@ -19,7 +19,11 @@ function App() {
   const [minus, setMinus] = useState(undefined);
   const [highlighted, setHighlighted] = useState(undefined);
   const [selectedMetric, setSelectedMetric] = useState("");
-
+  const [descriptions, setDescriptions] = useState({
+    Functions: "You get -1 for each line exceeding 15 in a function!",
+    Nesting: "You get -1 for each line exceeding 3 levels of nesting!",
+    Inheritance: "You get -20 for each inheritance occurence!",
+  });
   const resetState = () => {
     setRater(undefined);
     setResults({});
@@ -168,7 +172,7 @@ function App() {
           {data.title && !isRated && <Rate />}
 
           {isRated && (
-            <div className="flex justify-center items-center gap-2 sm:gap-6 mt-4 mb-6">
+            <div className="flex justify-center items-center gap-2 sm:gap-6 mt-6 mb-2">
               {[
                 ["Inheritance", showInheritance],
                 ["Nesting", showNesting],
@@ -194,7 +198,11 @@ function App() {
               })}
             </div>
           )}
-
+          {isRated && (
+            <p className="text-black mb-6">
+              {descriptions[selectedMetric] || "You get -30 for using python!"}
+            </p>
+          )}
           <Code />
           <Upload />
         </section>
