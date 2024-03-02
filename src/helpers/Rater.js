@@ -12,13 +12,17 @@ class Rater {
     for (let lineIndex = 0; lineIndex < this.codeLines.length; lineIndex++) {
       const line = this.codeLines[lineIndex];
       if (line.trim().length == 0) {
-        this.nesting[lineIndex + 1] = 0;
+        this.nesting[lineIndex + 1] = undefined;
         continue;
       }
       const leading_spaces = line.length - line.trimLeft().length;
       const current_level = Math.floor(leading_spaces / indentation);
-      if (current_level >= 3) {
-        lines.push([lineIndex + 1, current_level - 2]);
+
+      if (current_level >= 4) {
+        lines.push([lineIndex + 1, current_level - 3]);
+      }
+      if (this.nesting[lineIndex] == undefined) {
+        this.nesting[lineIndex] = current_level;
       }
       this.nesting[lineIndex + 1] = current_level;
       nesting_level = Math.max(nesting_level, current_level);
@@ -38,7 +42,6 @@ class Rater {
         while (j < this.codeLines.length && this.nesting[j + 1] > curr_level) {
           j++;
         }
-        console.log(j - i);
         if (j - i > 15) {
           longFuncs.push([i + 1, j + 1, j - i]);
         }

@@ -14,7 +14,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [rater, setRater] = useState(undefined);
   const [results, setResults] = useState({});
-  const [score, setScore] = useState(75);
+  const [score, setScore] = useState(70);
   const [totalMinus, setTotalMinus] = useState([]);
   const [minus, setMinus] = useState(undefined);
   const [highlighted, setHighlighted] = useState(undefined);
@@ -23,7 +23,7 @@ function App() {
   const resetState = () => {
     setRater(undefined);
     setResults({});
-    setScore(100);
+    setScore(70);
     setTotalMinus([]);
     setMinus(undefined);
     setHighlighted(undefined);
@@ -61,10 +61,10 @@ function App() {
 
   const evaluateScore = (results) => {
     const res = [];
-    let score = 100;
+    let score = 70;
 
     const sum = results.longFuncs.reduce((acc, func) => {
-      return acc + func[2];
+      return acc + func[2] - 15;
     }, 0);
 
     let average = sum / results.longFuncs.length;
@@ -99,13 +99,14 @@ function App() {
     setSelectedMetric("Functions");
     let hashset = new Set();
     results.longFuncs.forEach((res) => {
-      for (let i = res[0]; i < res[1]; i++) {
+      hashset.add(res[0]);
+      for (let i = res[0] + 15; i < res[1]; i++) {
         hashset.add(i);
       }
     });
     setHighlighted(hashset);
     let map = new Map();
-    results.longFuncs.map((data) => map.set(data[0], data[2]));
+    results.longFuncs.map((data) => map.set(data[0], data[2] - 15));
     setMinus(map);
   };
 
