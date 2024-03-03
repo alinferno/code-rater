@@ -25,13 +25,14 @@ function App() {
     Inheritance: "You get -20 for each inheritance occurence!",
   });
   const resetState = () => {
+    setData({ title: "", text: [], spaces: [] });
+    setIsRated(false);
     setRater(undefined);
     setResults({});
     setScore(70);
     setTotalMinus([]);
     setMinus(undefined);
     setHighlighted(undefined);
-    setIsRated(false);
     setSelectedMetric("");
   };
 
@@ -101,13 +102,11 @@ function App() {
   const showFunctions = () => {
     if (selectedMetric == "Functions") return unselect();
     setSelectedMetric("Functions");
-    let hashset = new Set();
+    const hashset = results.longFuncsIndices;
     results.longFuncs.forEach((res) => {
       hashset.add(res[0]);
-      for (let i = res[0] + 15; i < res[1]; i++) {
-        hashset.add(i);
-      }
     });
+    // setHighlighted(hashset);
     setHighlighted(hashset);
     let map = new Map();
     results.longFuncs.map((data) => map.set(data[0], data[2] - 15));
@@ -172,37 +171,47 @@ function App() {
           {data.title && !isRated && <Rate />}
 
           {isRated && (
-            <div className="flex justify-center items-center gap-2 sm:gap-6 mt-6 mb-2">
-              {[
-                ["Inheritance", showInheritance],
-                ["Nesting", showNesting],
-                ["Functions", showFunctions],
-              ].map((topic, index) => {
-                return (
-                  <div key={index} className="relative">
-                    <button
-                      onClick={() => topic[1]()}
-                      className={`bg-green-500 box-border border  text-white px-4 py-1  hover:cursor-pointer hover:bg-green-400 ${
-                        selectedMetric == topic[0]
-                          ? "border-green-800 "
-                          : "border-transparent"
-                      }`}
-                    >
-                      {topic[0]}
-                    </button>
-                    <p className="font-medium text-red-500 absolute left-[45%] -translate-x-2/4 z-99 top-full">
-                      - {totalMinus[index]}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
+            <>
+              <div className="flex justify-center items-center gap-2 sm:gap-6 mt-6 mb-2">
+                {[
+                  ["Inheritance", showInheritance],
+                  ["Nesting", showNesting],
+                  ["Functions", showFunctions],
+                ].map((topic, index) => {
+                  return (
+                    <div key={index} className="relative">
+                      <button
+                        onClick={() => topic[1]()}
+                        className={`bg-green-500 box-border border  text-white px-4 py-1  hover:cursor-pointer hover:bg-green-400 ${
+                          selectedMetric == topic[0]
+                            ? "border-green-800 "
+                            : "border-transparent"
+                        }`}
+                      >
+                        {topic[0]}
+                      </button>
+                      <p className="font-medium text-red-500 absolute left-[45%] -translate-x-2/4 z-99 top-full">
+                        - {totalMinus[index]}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+              {isRated && (
+                <p className="text-black ">
+                  {descriptions[selectedMetric] ||
+                    "You get -30 for using python!"}
+                </p>
+              )}
+              {/* <button
+                className="bg-green-500 box-border border  text-white px-4 py-1  hover:cursor-pointer hover:bg-green-400"
+                onClick={resetState}
+              >
+                Clear
+              </button> */}
+            </>
           )}
-          {isRated && (
-            <p className="text-black mb-6">
-              {descriptions[selectedMetric] || "You get -30 for using python!"}
-            </p>
-          )}
+
           <Code />
           <Upload />
         </section>

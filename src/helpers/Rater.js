@@ -21,8 +21,10 @@ class Rater {
       if (current_level >= 4) {
         lines.push([lineIndex + 1, current_level - 3]);
       }
-      if (this.nesting[lineIndex] == undefined) {
-        this.nesting[lineIndex] = current_level;
+      let copy = lineIndex;
+      while (this.nesting[copy] == undefined && copy >= 0) {
+        this.nesting[copy] = current_level;
+        copy -= 1;
       }
       this.nesting[lineIndex + 1] = current_level;
       nesting_level = Math.max(nesting_level, current_level);
@@ -34,21 +36,29 @@ class Rater {
   getFuncs() {
     const longFuncs = [];
     let i = 0;
+    const indices = new Set();
     while (i < this.codeLines.length) {
       const line = this.codeLines[i];
       if (line.includes("def ")) {
+        var length = 0;
         const curr_level = this.nesting[i + 1];
         let j = i + 1;
         while (j < this.codeLines.length && this.nesting[j + 1] > curr_level) {
+          if (this.codeLines[j].trim().length > 0) {
+            length += 1;
+            if (length > 15) {
+              indices.add(j + 1);
+            }
+          }
           j++;
         }
-        if (j - i > 15) {
-          longFuncs.push([i + 1, j + 1, j - i]);
+        if (length > 15) {
+          longFuncs.push([i + 1, j + 1, length]);
         }
       }
       i++;
     }
-    return longFuncs;
+    return [longFuncs, indices];
   }
 
   getCommentsCount() {
@@ -115,23 +125,14 @@ class Rater {
     return new Promise(async (resolve, reject) => {
       try {
         var nestingLines = this.calculateNestingLevels();
-        var longFuncs = this.getFuncs();
-        // var commentsCount = this.getCommentsCount();
-        // var variableNamingFormat = this.getVariableNamingFormat();
+        var [longFuncs, longFuncsIndices] = this.getFuncs();
         var inheritances = this.checkInheritance();
         await new Promise((resolve) => setTimeout(resolve, 0));
-
-        // console.log("Nesting Lines:", nestingLines);
-        // console.log("Long Functions:", longFuncs);
-        // console.log("Comments Count:", commentsCount);
-        // console.log("Variable Naming Format:", variableNamingFormat);
-        // console.log("Inheritances:", inheritances);
 
         resolve({
           nestingLines,
           longFuncs,
-          // commentsCount,
-          // variableNamingFormat,
+          longFuncsIndices,
           inheritances,
         });
       } catch (error) {
