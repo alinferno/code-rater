@@ -77,8 +77,8 @@ function App() {
     }, 0);
 
     res.push(results.inheritances.length * 20);
-    res.push(nestingScore);
     res.push(isNaN(sum) ? 0 : sum);
+    res.push(nestingScore);
 
     score -= res.reduce((acc, value) => {
       return acc + value;
@@ -175,8 +175,8 @@ function App() {
               <div className="flex justify-center items-center gap-2 sm:gap-6 mt-6 mb-2">
                 {[
                   ["Inheritance", showInheritance],
-                  ["Nesting", showNesting],
                   ["Functions", showFunctions],
+                  ["Nesting", showNesting],
                 ].map((topic, index) => {
                   return (
                     <div key={index} className="relative">
